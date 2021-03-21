@@ -81,6 +81,22 @@ public class Button : MonoBehaviour
         ApplyNewTriggerDistance();
     }
 
+    private void OnTriggerEnter( Collider collider )
+    {
+        if ( collider.gameObject.tag == _buttonTriggerTag )
+        {
+            OnButtonPressed?.Invoke();
+        }
+    }
+
+    private void OnTriggerExit( Collider collider )
+    {
+        if ( collider.gameObject.tag == _buttonTriggerTag )
+        {
+            OnButtonUnpressed?.Invoke();
+        }
+    }
+
     public void ChangeToUnpressed()
     {
         _currentButtonState = ButtonState.Unpressed;
@@ -125,21 +141,7 @@ public class Button : MonoBehaviour
         }
     }
     
-    private void OnTriggerEnter( Collider collider )
-    {
-        if ( collider.gameObject.name == _buttonTriggerTag )
-        {
-            OnButtonPressed?.Invoke();
-        }
-    }
-
-    private void OnTriggerExit( Collider collider )
-    {
-        if ( collider.gameObject.name == _buttonTriggerTag )
-        {
-            OnButtonUnpressed?.Invoke();
-        }
-    }
+    
 
     private void ApplyNewDiameter()
     {
