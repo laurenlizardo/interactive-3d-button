@@ -50,6 +50,11 @@ public class Button : MonoBehaviour
     [SerializeField]
     private float _baseHeight = 1;
     
+    [Tooltip( "The amount of time in seconds the button should remain pressed." )]
+    [Range( 1, 10 )]
+    [SerializeField]
+    private float _freezeTime = 3;
+    
     private readonly int _colorID = Shader.PropertyToID("_Color" );
     private readonly string _buttonTriggerTag = "Button Trigger";
     private float _scaleDifference = 1.5f;
@@ -145,5 +150,19 @@ public class Button : MonoBehaviour
     private void ApplyNewBaseHeight()
     {
         _baseTransform.localScale = new Vector3( _baseTransform.localScale.x, _baseHeight, _baseTransform.localScale.z );
+    }
+
+    private IEnumerator FreezeButtonCo()
+    {
+        _buttonTransform.GetComponent<Collider>().enabled = false;
+        _buttonTransform.GetComponent<Rigidbody>().isKinematic = true;
+        yield return new WaitForSeconds( _freezeTime );
+        _buttonTransform.GetComponent<Collider>().enabled = true;
+        _buttonTransform.GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    public void FreezeButton()
+    {
+        StartCoroutine( "FreezeButtonCo" );
     }
 }
