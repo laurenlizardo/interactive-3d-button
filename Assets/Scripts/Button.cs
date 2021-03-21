@@ -14,7 +14,9 @@ public class Button : MonoBehaviour
     
     [Header( "Transforms" )]
     [SerializeField] private Transform _buttonTransform;
+    [SerializeField] private Transform _triggerTransform;
     [SerializeField] private Transform _baseTransform;
+    [SerializeField] private Transform _bottomTransform;
 
     [Header( "Rendering" )]
     [SerializeField] private MeshRenderer _buttonRenderer;
@@ -46,18 +48,22 @@ public class Button : MonoBehaviour
     private float _buttonHeight = 1;
     
     [Tooltip( "The height of the base of the button in inches." )]
-    [Range( 1, 5 )]
+    [Range( 2, 6 )]
     [SerializeField]
-    private float _baseHeight = 1;
+    private float _baseHeight = 2;
     
     [Tooltip( "The amount of time in seconds the button should remain pressed." )]
     [Range( 1, 10 )]
     [SerializeField]
     private float _freezeTime = 3;
     
+    [Tooltip( "The distance between the button and the trigger in inches." )]
+    [Range( 1, 2 )]
+    [SerializeField]
+    private float _throwDistance = 1;
+    
     private readonly int _colorID = Shader.PropertyToID("_Color" );
     private readonly string _buttonTriggerTag = "Button Trigger";
-    private float _scaleDifference = 1.5f;
 
     private void Awake()
     {
@@ -72,6 +78,7 @@ public class Button : MonoBehaviour
         ApplyNewDiameter();
         ApplyNewButtonHeight();
         ApplyNewBaseHeight();
+        ApplyNewTriggerDistance();
     }
 
     public void ChangeToUnpressed()
@@ -136,10 +143,9 @@ public class Button : MonoBehaviour
 
     private void ApplyNewDiameter()
     {
-        float baseScale = _diameter * _scaleDifference;
-        
         _buttonTransform.localScale = new Vector3( _diameter, _buttonTransform.localScale.y, _diameter );
-        _baseTransform.localScale = new Vector3( baseScale, _baseTransform.localScale.y, baseScale );
+        _triggerTransform.localScale = new Vector3( _diameter, _triggerTransform.localScale.y, _diameter );
+        _baseTransform.localScale = new Vector3( _diameter, _baseTransform.localScale.y, _diameter );
     }
 
     private void ApplyNewButtonHeight()
@@ -164,5 +170,12 @@ public class Button : MonoBehaviour
     public void FreezeButton()
     {
         StartCoroutine( "FreezeButtonCo" );
+    }
+
+    public void ApplyNewTriggerDistance()
+    {
+        float convertedDist = _throwDistance * .0254f;
+        float yPos = _buttonTransform.localPosition.y - convertedDist;
+        _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, yPos, _triggerTransform.localPosition.z );
     }
 }
