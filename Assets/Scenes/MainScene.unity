@@ -633,8 +633,8 @@ GameObject:
   - component: {fileID: 364571999}
   - component: {fileID: 364571998}
   m_Layer: 0
-  m_Name: Bottom Trigger
-  m_TagString: Untagged
+  m_Name: Button Trigger
+  m_TagString: Button Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

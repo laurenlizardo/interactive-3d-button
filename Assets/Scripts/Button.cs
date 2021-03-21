@@ -35,6 +35,8 @@ public class Button : MonoBehaviour
     [SerializeField] public UnityEvent OnButtonPressed;
     [SerializeField] public UnityEvent OnButtonUnpressed;
 
+    private readonly string _buttonTriggerTag = "Button Trigger";
+
     private void Awake()
     {
         if ( _mpb == null )
@@ -93,7 +95,7 @@ public class Button : MonoBehaviour
     
     private void OnTriggerEnter( Collider collider )
     {
-        if ( collider == _bottomTrigger )
+        if ( collider.gameObject.name == _buttonTriggerTag )
         {
             OnButtonPressed?.Invoke();
         }
@@ -101,7 +103,7 @@ public class Button : MonoBehaviour
 
     private void OnTriggerExit( Collider collider )
     {
-        if ( collider == _bottomTrigger )
+        if ( collider.gameObject.name == _buttonTriggerTag )
         {
             OnButtonUnpressed?.Invoke();
         }
