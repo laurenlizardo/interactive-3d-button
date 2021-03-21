@@ -64,7 +64,8 @@ public class Button : MonoBehaviour
     
     private readonly int _colorID = Shader.PropertyToID("_Color" );
     private readonly string _buttonTriggerTag = "Button Trigger";
-
+    
+#region MonoBehaviour Methods
     private void Awake()
     {
         if ( _mpb == null )
@@ -96,7 +97,9 @@ public class Button : MonoBehaviour
             OnButtonUnpressed?.Invoke();
         }
     }
+#endregion MonoBehaviour Methods
 
+#region Event Listeners
     public void ChangeToUnpressed()
     {
         _currentButtonState = ButtonState.Unpressed;
@@ -141,8 +144,13 @@ public class Button : MonoBehaviour
         }
     }
     
+    public void FreezeButton()
+    {
+        StartCoroutine( "FreezeButtonCo" );
+    }
+#endregion Event Listeners
     
-
+#region Private Methods
     private void ApplyNewDiameter()
     {
         _buttonTransform.localScale = new Vector3( _diameter, _buttonTransform.localScale.y, _diameter );
@@ -159,25 +167,24 @@ public class Button : MonoBehaviour
     {
         _baseTransform.localScale = new Vector3( _baseTransform.localScale.x, _baseHeight, _baseTransform.localScale.z );
     }
-
-    private IEnumerator FreezeButtonCo()
-    {
-        _buttonTransform.GetComponent<Collider>().enabled = false;
-        _buttonTransform.GetComponent<Rigidbody>().isKinematic = true;
-        yield return new WaitForSeconds( _freezeTime );
-        _buttonTransform.GetComponent<Collider>().enabled = true;
-        _buttonTransform.GetComponent<Rigidbody>().isKinematic = false;
-    }
-
-    public void FreezeButton()
-    {
-        StartCoroutine( "FreezeButtonCo" );
-    }
-
+    
+    
     public void ApplyNewTriggerDistance()
     {
         float convertedDist = _throwDistance * .0254f;
         float yPos = _buttonTransform.localPosition.y - convertedDist;
         _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, yPos, _triggerTransform.localPosition.z );
     }
+#endregion Private Methods
+    
+#region Coroutines
+    private IEnumerator FreezeButtonCo()
+    {
+        _buttonTransform.transform.GetChild(0).GetComponent<Collider>().enabled = false;
+        _buttonTransform.transform.GetChild(0).GetComponent<Rigidbody>().isKinematic = true;
+        yield return new WaitForSeconds( _freezeTime );
+        _buttonTransform.transform.GetChild(0).GetComponent<Collider>().enabled = true;
+        _buttonTransform.transform.GetChild(0).GetComponent<Rigidbody>().isKinematic = false;
+    }
+#endregion Coroutines
 }
