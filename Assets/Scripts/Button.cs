@@ -28,7 +28,7 @@ public class Button : MonoBehaviour
     
     //==================================================================
     
-    [SerializeField] private Collider _bottomTrigger;
+    [SerializeField] private Collider _buttonTrigger;
     
     //==================================================================
     

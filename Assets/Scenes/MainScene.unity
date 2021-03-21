@@ -1560,7 +1560,7 @@ MonoBehaviour:
   _audioSource: {fileID: 1520415327}
   _unpressedSound: {fileID: 8300000, guid: fcbb22acf1dbbb64fbc4f4180c1cf608, type: 3}
   _pressedSound: {fileID: 8300000, guid: 7f1d1dc468ecc5643a225adbb74cf91d, type: 3}
-  _bottomTrigger: {fileID: 364571998}
+  _buttonTrigger: {fileID: 364571998}
   OnButtonPressed:
     m_PersistentCalls:
       m_Calls:
