@@ -515,7 +515,7 @@ Transform:
   m_GameObject: {fileID: 327549591}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.038100004, z: 0}
-  m_LocalScale: {x: 1.4999999, y: 1, z: 1.4999999}
+  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children:
   - {fileID: 1679560396}
   - {fileID: 1856201428}
@@ -1555,12 +1555,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentButtonState: 0
+  _buttonTransform: {fileID: 1234819046}
+  _baseTransform: {fileID: 327549592}
+  _buttonRenderer: {fileID: 912653054}
   _unpressedColor: {r: 0.5754717, g: 0, b: 0, a: 0}
   _pressedColor: {r: 0, g: 0.6132076, b: 0.02250297, a: 0}
+  _buttonTrigger: {fileID: 364571998}
   _audioSource: {fileID: 1520415327}
   _unpressedSound: {fileID: 8300000, guid: fcbb22acf1dbbb64fbc4f4180c1cf608, type: 3}
   _pressedSound: {fileID: 8300000, guid: 7f1d1dc468ecc5643a225adbb74cf91d, type: 3}
-  _buttonTrigger: {fileID: 364571998}
   OnButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -1639,6 +1642,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _diameter: 1
+  _buttonHeight: 1
+  _baseHeight: 1
 --- !u!1 &944656313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1858,7 +1864,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1234819046}
   m_Layer: 0
-  m_Name: Metric Transform
+  m_Name: Button Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,31 +11,48 @@ public class Button : MonoBehaviour
         Pressed
     }
     [SerializeField] private ButtonState _currentButtonState;
-
-    //==================================================================
     
-    private MaterialPropertyBlock _mpb;
-    private int _colorID = Shader.PropertyToID("_Color" );
+    [Header( "Transforms" )]
+    [SerializeField] private Transform _buttonTransform;
+    [SerializeField] private Transform _baseTransform;
+
+    [Header( "Rendering" )]
+    [SerializeField] private MeshRenderer _buttonRenderer;
     [SerializeField] private Color _unpressedColor;
     [SerializeField] private Color _pressedColor;
-    private MeshRenderer _meshRenderer => GetComponent<MeshRenderer>();
+    private MaterialPropertyBlock _mpb;
+    
+    [Header("Colliders")]
+    [SerializeField] private Collider _buttonTrigger;
 
-    //==================================================================
-
+    [Header("Audio")]
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _unpressedSound;
     [SerializeField] private AudioClip _pressedSound;
     
-    //==================================================================
-    
-    [SerializeField] private Collider _buttonTrigger;
-    
-    //==================================================================
-    
+    [Header( "Events" )]
     [SerializeField] public UnityEvent OnButtonPressed;
     [SerializeField] public UnityEvent OnButtonUnpressed;
-
+    
+    [Header( "Tunables" )]
+    [Tooltip( "Diameter of the button in inches. " )]
+    [Range( 1, 5 )]
+    [SerializeField]
+    private float _diameter = 1;
+    
+    [Tooltip( "The height of the button in inches." )]
+    [Range( 1, 5 )]
+    [SerializeField]
+    private float _buttonHeight = 1;
+    
+    [Tooltip( "The height of the base of the button in inches." )]
+    [Range( 1, 5 )]
+    [SerializeField]
+    private float _baseHeight = 1;
+    
+    private readonly int _colorID = Shader.PropertyToID("_Color" );
     private readonly string _buttonTriggerTag = "Button Trigger";
+    private float _scaleDifference = 1.5f;
 
     private void Awake()
     {
@@ -47,6 +64,9 @@ public class Button : MonoBehaviour
     private void OnValidate()
     {
         ChangeColor();
+        ApplyNewDiameter();
+        ApplyNewButtonHeight();
+        ApplyNewBaseHeight();
     }
 
     public void ChangeToUnpressed()
@@ -76,7 +96,7 @@ public class Button : MonoBehaviour
             _mpb.SetColor( _colorID, _unpressedColor );
         }
         
-        _meshRenderer.SetPropertyBlock( _mpb );
+        _buttonRenderer.SetPropertyBlock( _mpb );
     }
 
     public void PlaySound()
@@ -107,5 +127,23 @@ public class Button : MonoBehaviour
         {
             OnButtonUnpressed?.Invoke();
         }
+    }
+
+    private void ApplyNewDiameter()
+    {
+        float baseScale = _diameter * _scaleDifference;
+        
+        _buttonTransform.localScale = new Vector3( _diameter, _buttonTransform.localScale.y, _diameter );
+        _baseTransform.localScale = new Vector3( baseScale, _baseTransform.localScale.y, baseScale );
+    }
+
+    private void ApplyNewButtonHeight()
+    {
+        _buttonTransform.localScale = new Vector3( _buttonTransform.localScale.x, _buttonHeight, _buttonTransform.localScale.z );
+    }
+
+    private void ApplyNewBaseHeight()
+    {
+        _baseTransform.localScale = new Vector3( _baseTransform.localScale.x, _baseHeight, _baseTransform.localScale.z );
     }
 }
