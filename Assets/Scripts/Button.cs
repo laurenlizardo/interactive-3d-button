@@ -42,10 +42,10 @@ public class Button : MonoBehaviour
     [SerializeField]
     private float _diameter = 1;
     
-    [Tooltip( "The height of the button in inches." )]
-    [Range( 1, 5 )]
-    [SerializeField]
-    private float _buttonHeight = 1;
+    // [Tooltip( "The height of the button in inches." )]
+    // [Range( 1, 5 )]
+    // [SerializeField]
+    // private float _buttonHeight = 1;
     
     [Tooltip( "The height of the base of the button in inches." )]
     [Range( 2, 6 )]
@@ -65,6 +65,11 @@ public class Button : MonoBehaviour
     private readonly int _colorID = Shader.PropertyToID("_Color" );
     private readonly string _buttonTriggerTag = "Button Trigger";
     
+    //===========
+
+    private Vector3 _startPosition;
+    private Vector3 _triggerPosition;
+    
 #region MonoBehaviour Methods
     private void Awake()
     {
@@ -73,13 +78,16 @@ public class Button : MonoBehaviour
             _mpb = new MaterialPropertyBlock();
         }
     }
-    private void OnValidate()
+
+    private void Start()
     {
-        ChangeColor();
-        ApplyNewDiameter();
-        ApplyNewButtonHeight();
-        ApplyNewBaseHeight();
-        ApplyNewTriggerDistance();
+        _startPosition = transform.localPosition;
+        _triggerTransform.localPosition = new Vector3( _startPosition.x, ConvertToInches( -_throwDistance ), _startPosition.z );
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void OnTriggerEnter( Collider collider )
@@ -96,6 +104,15 @@ public class Button : MonoBehaviour
         {
             OnButtonUnpressed?.Invoke();
         }
+    }
+    
+    private void OnValidate()
+    {
+        ChangeColor();
+        ApplyNewDiameter();
+        ApplyNewButtonHeight();
+        ApplyNewBaseHeight();
+        ApplyNewTriggerDistance();
     }
 #endregion MonoBehaviour Methods
 
@@ -154,13 +171,13 @@ public class Button : MonoBehaviour
     private void ApplyNewDiameter()
     {
         _buttonTransform.localScale = new Vector3( _diameter, _buttonTransform.localScale.y, _diameter );
-        _triggerTransform.localScale = new Vector3( _diameter, _triggerTransform.localScale.y, _diameter );
+        //_triggerTransform.localScale = new Vector3( _diameter, _triggerTransform.localScale.y, _diameter );
         _baseTransform.localScale = new Vector3( _diameter, _baseTransform.localScale.y, _diameter );
     }
 
     private void ApplyNewButtonHeight()
     {
-        _buttonTransform.localScale = new Vector3( _buttonTransform.localScale.x, _buttonHeight, _buttonTransform.localScale.z );
+        //_buttonTransform.localScale = new Vector3( _buttonTransform.localScale.x, _buttonHeight, _buttonTransform.localScale.z );
     }
 
     private void ApplyNewBaseHeight()
@@ -169,11 +186,17 @@ public class Button : MonoBehaviour
     }
     
     
-    public void ApplyNewTriggerDistance()
+    private void ApplyNewTriggerDistance()
     {
         float convertedDist = _throwDistance * .0254f;
         float yPos = _buttonTransform.localPosition.y - convertedDist;
         _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, yPos, _triggerTransform.localPosition.z );
+    }
+
+    private float ConvertToInches( float meter )
+    {
+        float inchToMeters = .0254f;
+        return meter * inchToMeters;
     }
 #endregion Private Methods
     
