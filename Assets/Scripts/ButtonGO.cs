@@ -62,34 +62,27 @@ public class ButtonGO : MonoBehaviour
         if ( transform.localPosition.y < _stopPosition)
         {
             transform.localPosition = new Vector3( transform.localPosition.x, _stopPosition, transform.localPosition.z );
-        }
-    }
-
-    private void LateUpdate()
-    {
-        // Helps the button get unstuck
-        if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
-        {
-            _rigidbody.isKinematic = false;
+            _buttonController.CurrentButtonState = ButtonState.Pressed;
+            _buttonController.OnButtonPressed?.Invoke();
         }
     }
     
     private void OnTriggerEnter( Collider collider )
     {
-        if ( collider.gameObject.tag == _triggerTag )
-        {
-            _buttonController.CurrentButtonState = ButtonState.Pressed;
-            _buttonController.OnButtonPressed?.Invoke();
-        }
+        // if ( collider.gameObject.tag == _triggerTag )
+        // {
+        //     _buttonController.CurrentButtonState = ButtonState.Pressed;
+        //     _buttonController.OnButtonPressed?.Invoke();
+        // }
     }
 
     private void OnTriggerExit( Collider collider )
     {
-        if ( collider.gameObject.tag == _triggerTag )
-        {
-            _buttonController.CurrentButtonState = ButtonState.Unpressed;
-            _buttonController.OnButtonUnpressed?.Invoke();
-        }
+        // if ( collider.gameObject.tag == _triggerTag )
+        // {
+        //     _buttonController.CurrentButtonState = ButtonState.Unpressed;
+        //     _buttonController.OnButtonUnpressed?.Invoke();
+        // }
     }
 #endregion
 
@@ -119,6 +112,8 @@ public void FreezeButton()
         _rigidbody.isKinematic = true;
         yield return new WaitForSeconds( _buttonController.GetFreezeTime() );
         _rigidbody.isKinematic = false;
+        _buttonController.CurrentButtonState = ButtonState.Unpressed;
+        _buttonController.OnButtonUnpressed?.Invoke();
     }
 #endregion Coroutines
 }
