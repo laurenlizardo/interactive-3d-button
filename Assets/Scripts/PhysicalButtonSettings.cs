@@ -1,12 +1,12 @@
 using UnityEngine;
 
 /// <summary>
-/// Settings based on the physical button.
+/// Settings for the physical button.
 /// </summary>
 [CreateAssetMenu( fileName = "New Physical Button Settings", menuName = "Button Tunables/Physical Settings")]
 public class PhysicalButtonSettings : ScriptableObject
 {
-    [Tooltip( "Diameter of the button in inches. " )]
+    [Tooltip( "Diameter of the button in inches." )]
     [Range( 1, 5 )]
     public float Diameter = 1;
     

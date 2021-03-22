@@ -1010,7 +1010,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonController: {fileID: 1075859180}
-  _stopPosition: 0
 --- !u!1 &281344991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1100,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281344991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0742, y: 1.1323, z: 0.5395}
+  m_LocalPosition: {x: 0.15, y: 1.15, z: 0.55}
   m_LocalScale: {x: 0.0254, y: 0.0254, z: 0.0254}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1985,11 +1984,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2ff17d2a654c7469a6451391599abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StateSettings:
+  _availableStateSettings:
   - {fileID: 11400000, guid: e54877921793c5142a66263bc49bd6af, type: 2}
   - {fileID: 11400000, guid: 5c4eed2b7046c9f42b67075cf025835c, type: 2}
-  _currentButtonState: 0
   _currentPhysicalSettings: {fileID: 11400000, guid: 0e6bf2eb8395b6f469be230e7fe7213d, type: 2}
+  _currentButtonState: 0
+  _buttonGo: {fileID: 221876799}
+  _buttonTransform: {fileID: 110424180}
+  _triggerTransform: {fileID: 794789271}
+  _baseTransform: {fileID: 211577330}
+  _audioSource: {fileID: 1520415327}
   OnButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -2056,11 +2060,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _buttonGo: {fileID: 221876799}
-  _audioSource: {fileID: 1520415327}
-  _buttonTransform: {fileID: 110424180}
-  _triggerTransform: {fileID: 794789271}
-  _baseTransform: {fileID: 211577330}
 --- !u!4 &1075859181
 Transform:
   m_ObjectHideFlags: 0

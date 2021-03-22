@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Settings based on the assigned state.
+/// Settings for the assigned state.
 /// </summary>
 [CreateAssetMenu( fileName = "New Button State Settings", menuName = "Button Tunables/State Settings")]
 public class ButtonStateSettings : ScriptableObject

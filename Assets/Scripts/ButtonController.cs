@@ -1,43 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Helpers;
 
+/// <summary>
+/// Holds references to its child objects and controls the overall behaviour of the button.
+/// </summary>
 public class ButtonController : MonoBehaviour
 {
-    public ButtonStateSettings[] StateSettings;
+    /// <summary>
+    /// An extensible collection of settings for each button state.
+    /// Populate the collection with one Scriptable Object per button state.
+    /// </summary>
+    [SerializeField] private ButtonStateSettings[] _availableStateSettings;
+    /// <summary>
+    /// The physical settings to apply to the button.
+    /// Includes diameter, throw distance, and freeze time.
+    /// </summary>
+    [SerializeField] private PhysicalButtonSettings _currentPhysicalSettings;
     
+    /// <summary>
+    /// The current set button state.
+    /// Dictates what settings are applied to the button.
+    /// </summary>
     [SerializeField] private ButtonState _currentButtonState;
     public ButtonState CurrentButtonState
     {
-        get
-        {
-            return _currentButtonState;
-        }
-        set
-        {
-            _currentButtonState = value;
-        }
+        get => _currentButtonState;
+        set => _currentButtonState = value;
     }
-    
-    private ButtonStateSettings _currentStateSettings
-    {
-        get
-        {
-            return GetSettingsByState( _currentButtonState );
-        }
-    }
-    
-    [SerializeField] private PhysicalButtonSettings _currentPhysicalSettings;
+    private ButtonStateSettings _currentStateSettings => GetSettingsByState( _currentButtonState );
 
-    [Header( "Events" )]
-    [SerializeField] public UnityEvent OnButtonPressed;
-    [SerializeField] public UnityEvent OnButtonUnpressed;
-
+    /// <summary>
+    /// The component attached the button game object.
+    /// </summary>
     [SerializeField] private ButtonGO _buttonGo;
-    [SerializeField] private AudioSource _audioSource;
-
     /// <summary>
     /// The empty parent transform of the button game object.
     /// </summary>
@@ -50,9 +46,17 @@ public class ButtonController : MonoBehaviour
     /// The empty parent transform of the base group.
     /// </summary>
     [SerializeField] private Transform _baseTransform;
+    /// <summary>
+    /// The audio source used to play audio clips.
+    /// </summary>
+    [SerializeField] private AudioSource _audioSource;
+    
+    
+    [Header( "Events" )]
+    [SerializeField] public UnityEvent OnButtonPressed;
+    [SerializeField] public UnityEvent OnButtonUnpressed;
     
 #region MonoBehaviour Methods
-
     private void Start()
     {
         _currentButtonState = ButtonState.Unpressed;
@@ -69,32 +73,35 @@ public class ButtonController : MonoBehaviour
 #endregion MonoBehaviour Methods
     
 #region Event Listeners
-public void ChangeColor()
+    /// <summary>
+    /// Changes the color based on the settings of the current state.
+    /// </summary>
+    public void ChangeColor()
     {
         Color color = _currentStateSettings.Color;
         _buttonGo.ChangeColor( color );
     }
     
+    /// <summary>
+    /// Plays the sounds based on the settings of the current state.
+    /// </summary>
     public void PlaySound()
     {
         AudioClip clip = _currentStateSettings.Sound;
         _audioSource.clip = clip;
-
-        if (_audioSource.isPlaying)
-        {
-            _audioSource.Stop();
-        }
-        
-        _audioSource.Play();
+        _audioSource.PlayOneShot( clip );
     }
 #endregion Event Listeners
 
 #region Private Methods
+    /// <summary>
+    /// Returns the state setting in the collection whose state matches the argument.
+    /// </summary>
     private ButtonStateSettings GetSettingsByState( ButtonState state )
     {
-        if ( StateSettings.Length > 0 )
+        if ( _availableStateSettings.Length > 0 )
         {
-            foreach ( ButtonStateSettings settings in StateSettings )
+            foreach ( ButtonStateSettings settings in _availableStateSettings )
             {
                 if ( settings.ButtonState == state )
                 {
@@ -104,24 +111,17 @@ public void ChangeColor()
         }
         return null;
     }
-
+    /// <summary>
+    /// Applies the relevant state settings from the ScriptableObject.
+    /// </summary>
     private void ApplyStateSettings()
     {
-        ButtonStateSettings settings = _currentStateSettings;
-        
-        // State
-        _currentButtonState = settings.ButtonState;
-
-        // Color
-        Color color = settings.Color;
-        _buttonGo.ChangeColor( color );
-
-        // Sound
-        AudioClip clip = settings.Sound;
-        _audioSource.clip = clip;
-        _audioSource.PlayOneShot( clip );
+        ChangeColor();
     }
     
+    /// <summary>
+    /// Applies the physical settings from the ScriptableObject.
+    /// </summary>
     private void ApplyPhysicalSettings()
     {
         PhysicalButtonSettings settings = _currentPhysicalSettings;
@@ -130,7 +130,7 @@ public void ChangeColor()
         _buttonTransform.localScale = new Vector3( settings.Diameter, _buttonTransform.localScale.y, settings.Diameter );
         _baseTransform.localScale = new Vector3( settings.Diameter, _baseTransform.localScale.y, settings.Diameter );
         
-        // Trigger Distance
+        // Trigger Distance - TODO: Scrap this.
         float distance = GetThrowDistanceInMeters();
         float yOffset = Mathf.Abs( _buttonGo.transform.localPosition.y );    // Distance from the center of the button game object to the parent transform
         float triggerPos = _buttonGo.transform.localPosition.y - yOffset - distance;    // The y value of where the parent transform of the trigger game object should be.
