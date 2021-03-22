@@ -79,6 +79,12 @@ public void ChangeColor()
     {
         AudioClip clip = _currentStateSettings.Sound;
         _audioSource.clip = clip;
+
+        if (_audioSource.isPlaying)
+        {
+            _audioSource.Stop();
+        }
+        
         _audioSource.Play();
     }
 #endregion Event Listeners

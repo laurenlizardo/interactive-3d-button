@@ -65,10 +65,10 @@ public class ButtonGO : MonoBehaviour
         }
         
         // Helps the button get unstuck
-        if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
-        {
-            _rigidbody.isKinematic = false;
-        }
+        // if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
+        // {
+        //     _rigidbody.isKinematic = false;
+        // }
     }
     
     private void OnTriggerEnter( Collider collider )
