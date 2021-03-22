@@ -110,7 +110,6 @@ public class Button : MonoBehaviour
     {
         ChangeColor();
         ApplyNewDiameter();
-        ApplyNewButtonHeight();
         ApplyNewBaseHeight();
         ApplyNewTriggerDistance();
     }
@@ -171,13 +170,7 @@ public class Button : MonoBehaviour
     private void ApplyNewDiameter()
     {
         _buttonTransform.localScale = new Vector3( _diameter, _buttonTransform.localScale.y, _diameter );
-        //_triggerTransform.localScale = new Vector3( _diameter, _triggerTransform.localScale.y, _diameter );
         _baseTransform.localScale = new Vector3( _diameter, _baseTransform.localScale.y, _diameter );
-    }
-
-    private void ApplyNewButtonHeight()
-    {
-        //_buttonTransform.localScale = new Vector3( _buttonTransform.localScale.x, _buttonHeight, _buttonTransform.localScale.z );
     }
 
     private void ApplyNewBaseHeight()
