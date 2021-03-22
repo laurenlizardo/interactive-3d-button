@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent( typeof ( Rigidbody ))]
 [RequireComponent( typeof ( MeshRenderer ))]
-[RequireComponent( typeof ( BoxCollider ))]
+[RequireComponent( typeof ( Collider ))]
 public class ButtonGO : MonoBehaviour
 {
     [SerializeField] private ButtonController _buttonController;
