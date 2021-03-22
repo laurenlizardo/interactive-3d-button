@@ -87,7 +87,10 @@ public class Button : MonoBehaviour
 
     private void Update()
     {
-        
+        if ( transform.localPosition.y > _startPosition.y )
+        {
+            transform.localPosition = _startPosition;
+        }
     }
 
     private void OnTriggerEnter( Collider collider )
