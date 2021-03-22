@@ -35,12 +35,9 @@ public class ButtonController : MonoBehaviour
     [SerializeField] public UnityEvent OnButtonPressed;
     [SerializeField] public UnityEvent OnButtonUnpressed;
     
+    // Properties
     private ButtonStateSettings _currentStateSettings => GetSettingsByState( _currentButtonState );
-    public ButtonState CurrentButtonState
-    {
-        get => _currentButtonState;
-        set => _currentButtonState = value;
-    }
+    public ButtonState CurrentButtonState { set { _currentButtonState = value; } }
     
     /// <summary>
     /// The throw distance set in the physical button settings converted into meters.

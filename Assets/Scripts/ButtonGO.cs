@@ -27,6 +27,9 @@ public class ButtonGO : MonoBehaviour
     private MeshRenderer _renderer => GetComponent<MeshRenderer>();
     private Rigidbody _rigidbody => GetComponent<Rigidbody>();
     
+    [Tooltip( "The renderer of the button game object's child game object." )]
+    [SerializeField] private MeshRenderer _childRenderer;
+    
 #region MonoBehaviour Methods
     private void Start()
     {
@@ -80,6 +83,7 @@ public class ButtonGO : MonoBehaviour
         
         _mpb.SetColor( _colorID, color );
         _renderer.SetPropertyBlock( _mpb );
+        _childRenderer.SetPropertyBlock( _mpb );
     }
 #endregion
 
