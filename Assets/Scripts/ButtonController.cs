@@ -8,12 +8,24 @@ public class ButtonController : MonoBehaviour
 {
     public ButtonStateSettings[] StateSettings;
     
-    public static ButtonState CurrentButtonState;
+    [SerializeField] private ButtonState _currentButtonState;
+    public ButtonState CurrentButtonState
+    {
+        get
+        {
+            return _currentButtonState;
+        }
+        set
+        {
+            _currentButtonState = value;
+        }
+    }
+    
     private ButtonStateSettings _currentStateSettings
     {
         get
         {
-            return GetSettingsByState( CurrentButtonState );
+            return GetSettingsByState( _currentButtonState );
         }
     }
     
@@ -40,25 +52,34 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private Transform _baseTransform;
     
 #region MonoBehaviour Methods
+
+    private void Start()
+    {
+        _currentButtonState = ButtonState.Unpressed;
+        
+        ApplyStateSettings();
+        ApplyPhysicalSettings();
+    }
+
     private void OnValidate()
     {
-        // ApplyCurrentStateSettings();
-        // ApplyPhysicalButtonSettings();
+        ApplyStateSettings();
+        ApplyPhysicalSettings();
     }
 #endregion MonoBehaviour Methods
     
 #region Event Listeners
 public void ChangeColor()
     {
-        Color color = GetSettingsByState( CurrentButtonState ).Color;
+        Color color = _currentStateSettings.Color;
         _buttonGo.ChangeColor( color );
     }
     
     public void PlaySound()
     {
-        AudioClip clip = GetSettingsByState( CurrentButtonState ).Sound;
+        AudioClip clip = _currentStateSettings.Sound;
         _audioSource.clip = clip;
-        _audioSource.PlayOneShot( clip );
+        _audioSource.Play();
     }
 #endregion Event Listeners
 
@@ -83,7 +104,7 @@ public void ChangeColor()
         ButtonStateSettings settings = _currentStateSettings;
         
         // State
-        CurrentButtonState = settings.ButtonState;
+        _currentButtonState = settings.ButtonState;
 
         // Color
         Color color = settings.Color;
@@ -105,8 +126,9 @@ public void ChangeColor()
         
         // Trigger Distance
         float distance = GetThrowDistanceInMeters();
-        float yPos = _buttonTransform.localPosition.y - distance;
-        _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, yPos, _triggerTransform.localPosition.z );
+        float yOffset = Mathf.Abs( _buttonGo.transform.localPosition.y );    // Distance from the center of the button game object to the parent transform
+        float triggerPos = _buttonGo.transform.localPosition.y - yOffset - distance;    // The y value of where the parent transform of the trigger game object should be.
+        _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, triggerPos, _triggerTransform.localPosition.z );
     }
 
     public float GetThrowDistanceInMeters()

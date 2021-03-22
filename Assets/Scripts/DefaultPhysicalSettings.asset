@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5dad513673c9334d9855985ceeb512e, type: 3}
   m_Name: DefaultPhysicalSettings
   m_EditorClassIdentifier: 
-  Diameter: 1
+  Diameter: 3
   FreezeTime: 3
   ThrowDistance: 1

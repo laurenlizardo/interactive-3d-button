@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent( typeof ( Rigidbody ))]
 [RequireComponent( typeof ( MeshRenderer ))]
-[RequireComponent( typeof ( Collider ))]
+[RequireComponent( typeof ( BoxCollider ))]
 public class ButtonGO : MonoBehaviour
 {
     [SerializeField] private ButtonController _buttonController;
@@ -35,15 +35,7 @@ public class ButtonGO : MonoBehaviour
     private readonly string _triggerTag = "Button Trigger";
 
     private Vector3 _startPosition;
-
-    private float _maxDistance
-    {
-        get
-        {
-            float distance = _startPosition.y - _buttonController.GetThrowDistanceInMeters();
-            return distance;
-        }
-    }
+    [SerializeField] private float _stopPosition;
     
 #region MonoBehaviour Methods
     private void Awake()
@@ -57,8 +49,9 @@ public class ButtonGO : MonoBehaviour
     private void Start()
     {
         _startPosition = transform.localPosition;
+        _stopPosition = _startPosition.y - _buttonController.GetThrowDistanceInMeters();
     }
-
+    
     private void Update()
     {
         if ( transform.localPosition.y > _startPosition.y )
@@ -66,9 +59,15 @@ public class ButtonGO : MonoBehaviour
             transform.localPosition = _startPosition;
         }
 
-        if ( transform.localPosition.y < _maxDistance)
+        if ( transform.localPosition.y < _stopPosition)
         {
-            transform.localPosition = new Vector3( transform.localPosition.x, -_maxDistance, transform.localPosition.z );
+            transform.localPosition = new Vector3( transform.localPosition.x, _stopPosition, transform.localPosition.z );
+        }
+        
+        // Helps the button get unstuck
+        if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
+        {
+            _rigidbody.isKinematic = false;
         }
     }
     
@@ -76,7 +75,7 @@ public class ButtonGO : MonoBehaviour
     {
         if ( collider.gameObject.tag == _triggerTag )
         {
-            ButtonController.CurrentButtonState = ButtonState.Pressed;
+            _buttonController.CurrentButtonState = ButtonState.Pressed;
             _buttonController.OnButtonPressed?.Invoke();
         }
     }
@@ -85,7 +84,7 @@ public class ButtonGO : MonoBehaviour
     {
         if ( collider.gameObject.tag == _triggerTag )
         {
-            ButtonController.CurrentButtonState = ButtonState.Unpressed;
+            _buttonController.CurrentButtonState = ButtonState.Unpressed;
             _buttonController.OnButtonUnpressed?.Invoke();
         }
     }
@@ -94,6 +93,11 @@ public class ButtonGO : MonoBehaviour
 #region Public Methods
     public void ChangeColor( Color color )
     {
+        if (_mpb == null)
+        {
+            _mpb = new MaterialPropertyBlock();
+        }
+        
         _mpb.SetColor( _colorID, color );
         _renderer.SetPropertyBlock( _mpb );
     }
