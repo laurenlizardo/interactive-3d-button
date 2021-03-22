@@ -87,9 +87,14 @@ public class ButtonController : MonoBehaviour
     /// </summary>
     public void PlaySound()
     {
+        if ( _audioSource.isPlaying )
+        {
+            _audioSource.Stop();
+        }
+        
         AudioClip clip = _currentStateSettings.Sound;
         _audioSource.clip = clip;
-        _audioSource.PlayOneShot( clip );
+        _audioSource.Play();
     }
 #endregion Event Listeners
 

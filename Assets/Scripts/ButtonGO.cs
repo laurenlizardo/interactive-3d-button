@@ -75,7 +75,7 @@ public class ButtonGO : MonoBehaviour
 #endregion
 
 #region Event Listeners
-public void FreezeButton()
+    public void FreezeButton()
     {
         StartCoroutine( nameof( FreezeButtonCo ) );
     }
