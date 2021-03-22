@@ -5,12 +5,12 @@ using UnityEngine.Events;
 
 public class Button : MonoBehaviour
 {
-    public enum ButtonState
+    public enum ButtonState//====================
     {
         Unpressed,
         Pressed
     }
-    [SerializeField] private ButtonState _currentButtonState;
+    [SerializeField] private ButtonState _currentButtonState;//====================
     
     [Header( "Transforms" )]
     [SerializeField] private Transform _buttonTransform;
@@ -19,28 +19,28 @@ public class Button : MonoBehaviour
     [SerializeField] private Transform _bottomTransform;
 
     [Header( "Rendering" )]
-    [SerializeField] private MeshRenderer _buttonRenderer;
-    [SerializeField] private Color _unpressedColor;
-    [SerializeField] private Color _pressedColor;
-    private MaterialPropertyBlock _mpb;
+    [SerializeField] private MeshRenderer _buttonRenderer;//====================
+    [SerializeField] private Color _unpressedColor;//====================
+    [SerializeField] private Color _pressedColor;//====================
+    private MaterialPropertyBlock _mpb;//====================
     
-    [Header("Colliders")]
-    [SerializeField] private Collider _buttonTrigger;
+    // [Header("Colliders")]
+    // [SerializeField] private Collider _buttonTrigger;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _unpressedSound;
-    [SerializeField] private AudioClip _pressedSound;
+    [SerializeField] private AudioSource _audioSource;//====================
+    [SerializeField] private AudioClip _unpressedSound;//====================
+    [SerializeField] private AudioClip _pressedSound;//====================
     
     [Header( "Events" )]
-    [SerializeField] public UnityEvent OnButtonPressed;
-    [SerializeField] public UnityEvent OnButtonUnpressed;
+    [SerializeField] public UnityEvent OnButtonPressed;//====================
+    [SerializeField] public UnityEvent OnButtonUnpressed;//====================
     
     [Header( "Tunables" )]
     [Tooltip( "Diameter of the button in inches. " )]
     [Range( 1, 5 )]
     [SerializeField]
-    private float _diameter = 1;
+    private float _diameter = 1;//====================
     
     // [Tooltip( "The height of the button in inches." )]
     // [Range( 1, 5 )]
@@ -50,20 +50,20 @@ public class Button : MonoBehaviour
     [Tooltip( "The height of the base of the button in inches." )]
     [Range( 2, 6 )]
     [SerializeField]
-    private float _baseHeight = 2;
+    private float _baseHeight = 2;//====================
     
     [Tooltip( "The amount of time in seconds the button should remain pressed." )]
     [Range( 1, 10 )]
     [SerializeField]
-    private float _freezeTime = 3;
+    private float _freezeTime = 3;//====================
     
     [Tooltip( "The distance between the button and the trigger in inches." )]
     [Range( 1, 2 )]
     [SerializeField]
-    private float _throwDistance = 1;
+    private float _throwDistance = 1;//====================
     
-    private readonly int _colorID = Shader.PropertyToID("_Color" );
-    private readonly string _buttonTriggerTag = "Button Trigger";
+    private readonly int _colorID = Shader.PropertyToID("_Color" );//====================
+    private readonly string _buttonTriggerTag = "Button Trigger";//====================
     
     //===========
 
@@ -91,14 +91,14 @@ public class Button : MonoBehaviour
         {
             transform.localPosition = _startPosition;
         }
-
+        
         if ( transform.localPosition.y < ( _startPosition.y - ConvertToInches( _throwDistance ) ) )
         {
             transform.localPosition = new Vector3( transform.localPosition.x, -.0127f, transform.localPosition.z );
         }
     }
 
-    private void OnTriggerEnter( Collider collider )
+    private void OnTriggerEnter( Collider collider )//====================
     {
         if ( collider.gameObject.tag == _buttonTriggerTag )
         {
@@ -106,7 +106,7 @@ public class Button : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit( Collider collider )
+    private void OnTriggerExit( Collider collider )//====================
     {
         if ( collider.gameObject.tag == _buttonTriggerTag )
         {
@@ -114,7 +114,7 @@ public class Button : MonoBehaviour
         }
     }
     
-    private void OnValidate()
+    private void OnValidate()//====================
     {
         ChangeColor();
         ApplyNewDiameter();
@@ -134,7 +134,7 @@ public class Button : MonoBehaviour
         _currentButtonState = ButtonState.Pressed;
     }
     
-    public void ChangeColor()
+    public void ChangeColor()//====================
     {
         if ( _mpb == null )
         {
