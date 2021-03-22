@@ -42,6 +42,16 @@ public class ButtonController : MonoBehaviour
         set => _currentButtonState = value;
     }
     
+    /// <summary>
+    /// The throw distance set in the physical button settings converted into meters.
+    /// </summary>
+    public float ThrowDistanceInMeters => Convert.InchToMeter( _currentPhysicalSettings.ThrowDistance );
+    
+    /// <summary>
+    /// The freeze time set in the physical button settings.
+    /// </summary>
+    public float FreezeTime => _currentPhysicalSettings.FreezeTime;
+    
 #region MonoBehaviour Methods
     private void Start()
     {
@@ -122,20 +132,11 @@ public class ButtonController : MonoBehaviour
         _baseTransform.localScale = new Vector3( settings.Diameter, _baseTransform.localScale.y, settings.Diameter );
         
         // Trigger Distance - TODO: Scrap this.
-        float distance = GetThrowDistanceInMeters();
+        float distance = ThrowDistanceInMeters;
         float yOffset = Mathf.Abs( _buttonGo.transform.localPosition.y );    // Distance from the center of the button game object to the parent transform
         float triggerPos = _buttonGo.transform.localPosition.y - yOffset - distance;    // The y value of where the parent transform of the trigger game object should be.
         _triggerTransform.localPosition = new Vector3( _triggerTransform.localPosition.x, triggerPos, _triggerTransform.localPosition.z );
     }
-
-    public float GetThrowDistanceInMeters()
-    {
-        return Convert.InchToMeter( _currentPhysicalSettings.ThrowDistance );
-    }
-
-    public float GetFreezeTime()
-    {
-        return _currentPhysicalSettings.FreezeTime;
-    }
+    
 #endregion Private Methods
 }

@@ -35,7 +35,7 @@ public class ButtonGO : MonoBehaviour
          */
         
         _startPosition = transform.localPosition;
-        _maxDistance = _startPosition.y - _buttonController.GetThrowDistanceInMeters();
+        _maxDistance = _startPosition.y - _buttonController.ThrowDistanceInMeters;
     }
     
     private void Update()
@@ -109,7 +109,7 @@ public class ButtonGO : MonoBehaviour
         
         _rigidbody.isKinematic = true;
         
-        yield return new WaitForSeconds( _buttonController.GetFreezeTime() );
+        yield return new WaitForSeconds( _buttonController.FreezeTime );
         
         _rigidbody.isKinematic = false;
         _buttonController.CurrentButtonState = ButtonState.Unpressed;
