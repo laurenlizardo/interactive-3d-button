@@ -85,16 +85,16 @@ public class Button : MonoBehaviour
         _triggerTransform.localPosition = new Vector3( _startPosition.x, ConvertToInches( -_throwDistance ), _startPosition.z );
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if ( transform.localPosition.y > _startPosition.y )
         {
             transform.localPosition = _startPosition;
         }
 
-        if ( transform.localPosition.y < _triggerTransform.localPosition.y )
+        if ( transform.localPosition.y < ( _startPosition.y - ConvertToInches( _throwDistance ) ) )
         {
-            transform.localPosition = _triggerTransform.localPosition;
+            transform.localPosition = new Vector3( transform.localPosition.x, -.0127f, transform.localPosition.z );
         }
     }
 
@@ -204,11 +204,9 @@ public class Button : MonoBehaviour
 #region Coroutines
     private IEnumerator FreezeButtonCo()
     {
-        gameObject.GetComponent<Collider>().enabled = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         yield return new WaitForSeconds( _freezeTime );
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
-        gameObject.GetComponent<Collider>().enabled = true;
     }
 #endregion Coroutines
 }
