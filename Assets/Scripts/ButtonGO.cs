@@ -63,12 +63,15 @@ public class ButtonGO : MonoBehaviour
         {
             transform.localPosition = new Vector3( transform.localPosition.x, _stopPosition, transform.localPosition.z );
         }
-        
+    }
+
+    private void LateUpdate()
+    {
         // Helps the button get unstuck
-        // if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
-        // {
-        //     _rigidbody.isKinematic = false;
-        // }
+        if ( _buttonController.CurrentButtonState == ButtonState.Unpressed )
+        {
+            _rigidbody.isKinematic = false;
+        }
     }
     
     private void OnTriggerEnter( Collider collider )
