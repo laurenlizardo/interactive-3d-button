@@ -41,11 +41,13 @@ public class ButtonGO : MonoBehaviour
     
     private void Update()
     {
+        // Stop the button from going above its start position
         if ( transform.localPosition.y > _startPosition.y )
         {
             transform.localPosition = _startPosition;
         }
 
+        // Stop the button from going below its stop distance
         if ( transform.localPosition.y < _stopDistance)
         {
             transform.localPosition = new Vector3( transform.localPosition.x, _stopDistance, transform.localPosition.z );

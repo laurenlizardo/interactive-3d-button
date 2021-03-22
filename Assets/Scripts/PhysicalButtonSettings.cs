@@ -12,7 +12,7 @@ public class PhysicalButtonSettings : ScriptableObject
     
     [Tooltip( "The amount of time in seconds the button should remain pressed." )]
     [Range( 1, 10 )]
-    public float FreezeTime = 3;
+    public float FreezeTime = 1;
     
     [Tooltip( "The distance in inches at which the button should be activated." )]
     [Range( 1, 2 )]
