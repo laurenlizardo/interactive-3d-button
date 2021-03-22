@@ -9,48 +9,52 @@ using UnityEngine;
 [RequireComponent( typeof ( Collider ))]
 public class ButtonGO : MonoBehaviour
 {
+    [Tooltip("The ButtonController parent.")]
     [SerializeField] private ButtonController _buttonController;
-    private MeshRenderer _renderer => GetComponent<MeshRenderer>();
-    private Rigidbody _rigidbody => GetComponent<Rigidbody>();
 
-    /// <summary>
-    /// A reference to this game object's material property block.
-    /// This is used to change the color of the material without altering the material itself.
-    /// </summary>
+    [Tooltip( "A reference to this game object's material property block. This is used to change the color of the material without altering the material itself." )]
     private MaterialPropertyBlock _mpb;
-    /// <summary>
-    /// The name of the shader property converted to an integer.
-    /// </summary>
+    
+    [Tooltip("The name of the shader property converted to an integer.")]
     private readonly int _colorID = Shader.PropertyToID("_Color" );
 
-    /// <summary>
-    /// The start position of the button.
-    /// </summary>
+    [Tooltip( "The start position of the button." )]
     private Vector3 _startPosition;
-    /// <summary>
-    /// The max distance the button could be away from its start position.
-    /// </summary>
-    private float _stopDistance;
+    
+    [Tooltip( "The max distance the button could be away from its start position." )]
+    private float _maxDistance;
+    
+    private MeshRenderer _renderer => GetComponent<MeshRenderer>();
+    private Rigidbody _rigidbody => GetComponent<Rigidbody>();
     
 #region MonoBehaviour Methods
     private void Start()
     {
+        /*
+         * Initialize the start position and max distance.
+         */
+        
         _startPosition = transform.localPosition;
-        _stopDistance = _startPosition.y - _buttonController.GetThrowDistanceInMeters();
+        _maxDistance = _startPosition.y - _buttonController.GetThrowDistanceInMeters();
     }
     
     private void Update()
     {
-        // Stop the button from going above its start position
+        /*
+         * Stop the button from going above its start position.
+         * Stop the button from going below its stop distance.
+         * While the button is at its lowest point, set the current state to pressed and invoke the OnButtonPressed UnityEvent.
+         */
+
         if ( transform.localPosition.y > _startPosition.y )
         {
             transform.localPosition = _startPosition;
         }
 
-        // Stop the button from going below its stop distance
-        if ( transform.localPosition.y < _stopDistance)
+        if ( transform.localPosition.y < _maxDistance)
         {
-            transform.localPosition = new Vector3( transform.localPosition.x, _stopDistance, transform.localPosition.z );
+            transform.localPosition = new Vector3( transform.localPosition.x, _maxDistance, transform.localPosition.z );
+            
             _buttonController.CurrentButtonState = ButtonState.Pressed;
             _buttonController.OnButtonPressed?.Invoke();
         }
@@ -63,7 +67,12 @@ public class ButtonGO : MonoBehaviour
     /// </summary>
     public void ChangeColor( Color color )
     {
-        // Initialize the material property block if null.
+        /*
+         * Initialize the material property block if null.
+         * Set the material property block's color
+         *  Use that same material property block to set as the renderer's material property block.
+         */
+        
         if (_mpb == null)
         {
             _mpb = new MaterialPropertyBlock();
@@ -75,6 +84,9 @@ public class ButtonGO : MonoBehaviour
 #endregion
 
 #region Event Listeners
+    /// <summary>
+    /// The coroutine nested in a void method. Made this way to allow the method to be added as a listener to events.
+    /// </summary>
     public void FreezeButton()
     {
         StartCoroutine( nameof( FreezeButtonCo ) );
@@ -87,6 +99,14 @@ public class ButtonGO : MonoBehaviour
     /// </summary>
     private IEnumerator FreezeButtonCo()
     {
+        /*
+         * Set the rigidbody's isKinematic to true to stop the button from moving.
+         * Hold for the time set in the physical button settings.
+         * Set the rigidbody's isKinematic back to false to allow movement.
+         * Set the current button state to true.
+         * Invoke the unpressed UnityEvent.
+         */
+        
         _rigidbody.isKinematic = true;
         
         yield return new WaitForSeconds( _buttonController.GetFreezeTime() );

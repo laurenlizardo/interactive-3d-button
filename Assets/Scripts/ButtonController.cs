@@ -7,54 +7,40 @@ using Helpers;
 /// </summary>
 public class ButtonController : MonoBehaviour
 {
-    /// <summary>
-    /// An extensible collection of settings for each button state.
-    /// Populate the collection with one Scriptable Object per button state.
-    /// </summary>
+    [Tooltip( "An extensible collection of settings for each button state. Populate the collection with one Scriptable Object per button state." )]
     [SerializeField] private ButtonStateSettings[] _availableStateSettings;
-    /// <summary>
-    /// The physical settings to apply to the button.
-    /// Includes diameter, throw distance, and freeze time.
-    /// </summary>
+    
+    [Tooltip( "The physical settings to apply to the button. Includes diameter, throw distance, and freeze time." )]
     [SerializeField] private PhysicalButtonSettings _currentPhysicalSettings;
     
-    /// <summary>
-    /// The current set button state.
-    /// Dictates what settings are applied to the button.
-    /// </summary>
+    [Tooltip( "The current set button state. Dictates what settings are applied to the button." )]
     [SerializeField] private ButtonState _currentButtonState;
+    
+    [Tooltip( "The Button child game object." )]
+    [SerializeField] private ButtonGO _buttonGo;
+    
+    [Tooltip( "The empty parent transform of the button game object." )]
+    [SerializeField] private Transform _buttonTransform;
+    
+    [Tooltip( "The empty parent transform of the trigger collider." )]
+    [SerializeField] private Transform _triggerTransform;
+    
+    [Tooltip( "The empty parent transform of the base group." )]
+    [SerializeField] private Transform _baseTransform;
+    
+    [Tooltip( "The audio source used to play audio clips." )]
+    [SerializeField] private AudioSource _audioSource;
+    
+    [Header( "Events" )]
+    [SerializeField] public UnityEvent OnButtonPressed;
+    [SerializeField] public UnityEvent OnButtonUnpressed;
+    
+    private ButtonStateSettings _currentStateSettings => GetSettingsByState( _currentButtonState );
     public ButtonState CurrentButtonState
     {
         get => _currentButtonState;
         set => _currentButtonState = value;
     }
-    private ButtonStateSettings _currentStateSettings => GetSettingsByState( _currentButtonState );
-
-    /// <summary>
-    /// The component attached the button game object.
-    /// </summary>
-    [SerializeField] private ButtonGO _buttonGo;
-    /// <summary>
-    /// The empty parent transform of the button game object.
-    /// </summary>
-    [SerializeField] private Transform _buttonTransform;
-    /// <summary>
-    /// The empty parent transform of the trigger collider.
-    /// </summary>
-    [SerializeField] private Transform _triggerTransform;
-    /// <summary>
-    /// The empty parent transform of the base group.
-    /// </summary>
-    [SerializeField] private Transform _baseTransform;
-    /// <summary>
-    /// The audio source used to play audio clips.
-    /// </summary>
-    [SerializeField] private AudioSource _audioSource;
-    
-    
-    [Header( "Events" )]
-    [SerializeField] public UnityEvent OnButtonPressed;
-    [SerializeField] public UnityEvent OnButtonUnpressed;
     
 #region MonoBehaviour Methods
     private void Start()
