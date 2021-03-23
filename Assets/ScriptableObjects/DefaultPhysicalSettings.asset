@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DefaultPhysicalSettings
   m_EditorClassIdentifier: 
   Diameter: 3
-  FreezeTime: 3
+  FreezeTime: 1
   ThrowDistance: 1
